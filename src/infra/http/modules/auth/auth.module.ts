@@ -5,11 +5,18 @@ import { UserModule } from '../user/user.module';
 import { LocalStrategy } from 'src/modules/auth/strategies/local.strategy';
 import { ValidateUserUseCase } from 'src/modules/auth/useCases/validateUserUseCase/validateUserUseCase';
 import { SignInDtoValidateMiddleware } from './middleware/signInDtoValidate.middleware';
+import { SignInUseCase } from 'src/modules/auth/useCases/signInUseCase/signInUseCase';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-    imports: [DatabaseModule, UserModule],
+    imports: [DatabaseModule, UserModule,
+        JwtModule.register({
+            secret: process.env.JWT_SECRET,
+            signOptions:{expiresIn: process.env.JWT_EXPIRE},
+        })
+    ],
     controllers: [AuthController],
-    providers: [LocalStrategy, ValidateUserUseCase],
+    providers: [LocalStrategy, ValidateUserUseCase, SignInUseCase],
 })
 export class AuthModule {
     configure(consumer: MiddlewareConsumer) {
