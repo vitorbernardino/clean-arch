@@ -7,6 +7,7 @@ import { ValidateUserUseCase } from 'src/modules/auth/useCases/validateUserUseCa
 import { SignInDtoValidateMiddleware } from './middleware/signInDtoValidate.middleware';
 import { SignInUseCase } from 'src/modules/auth/useCases/signInUseCase/signInUseCase';
 import { JwtModule } from '@nestjs/jwt';
+import { JwtStrategy } from 'src/modules/auth/strategies/jwt.strategy';
 
 @Module({
     imports: [DatabaseModule, UserModule,
@@ -16,7 +17,7 @@ import { JwtModule } from '@nestjs/jwt';
         })
     ],
     controllers: [AuthController],
-    providers: [LocalStrategy, ValidateUserUseCase, SignInUseCase],
+    providers: [LocalStrategy, ValidateUserUseCase, SignInUseCase, JwtStrategy],
 })
 export class AuthModule {
     configure(consumer: MiddlewareConsumer) {
